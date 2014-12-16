@@ -14,6 +14,6 @@ after_failure:
   - ./travis-common.sh dump_logs
 
 notifications:
-  email: sp@xnlogic.com
+  email:
     on_success: change
     on_failure: change
