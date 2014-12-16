@@ -1,7 +1,19 @@
-language: bash
+env:
+  - global:
+    - WARNINGS_ARE_ERRORS=1
 
-before_script:
-    - curl -L "http://downloads.sourceforge.net/shunit2/shunit2-2.1.6.tgz" | tar zx
+before_install:
+  - curl -OL http://raw.github.com/xnlogic/xn-travis/master/travis-common.sh
+  - chmod 755 ./travis-common.sh
+  - ./travis-common.sh bootstrap
+install:
+  - ./travis-common.sh install_deps
+script: ./travis-common.sh run_tests
 
-script:
-    - bash travis-common.sh
+after_failure:
+  - ./travis-common.sh dump_logs
+
+notifications:
+  email: sp@xnlogic.com
+    on_success: change
+    on_failure: change
