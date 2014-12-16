@@ -45,14 +45,15 @@ InstallAWSCLI() {
 
 InstallLeiningen() {
   if [[ ! -f /usr/local/bin/lein ]]; then
-  echo "Installing Leiningen..."
-  sudo wget -O /usr/local/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
-  sudo chmod a+x /usr/local/bin/lein
+    echo "Installing Leiningen..."
+    sudo wget -O /usr/local/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+    sudo chmod a+x /usr/local/bin/lein
   fi
 }
 
 BootstrapLinuxOptions() {
     ## Insert Linux installation options if necessary
+    echo "Configuring additional Linux Options"
 }
 
 BootstrapMac() {
@@ -63,6 +64,7 @@ BootstrapMac() {
 
 BootstrapMacOptions() {
     ## Insert Mac installation options if necessary
+    echo "Configuring additional Mac Options"
 }
 
 AptGetInstall() {
@@ -102,7 +104,8 @@ DpkgCurlInstall() {
 
 DumpSysinfo() {
     echo "Dumping system information."
-    facter
+    mkdir -p logs
+    facter > logs/facter.out
 }
 
 DumpLogsByExtension() {
