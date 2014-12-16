@@ -9,64 +9,6 @@ set -x
 OS=$(uname -s)
 PATH="${PATH}"
 
-Bootstrap() {
-    if [[ "Darwin" == "${OS}" ]]; then
-        BootstrapMac
-    elif [[ "Linux" == "${OS}" ]]; then
-        BootstrapLinux
-    else
-        echo "Unknown OS: ${OS}"
-        exit 1
-    fi
-}
-
-BootstrapLinux() {
-    ## Insert Linux dependencies if necessary
-    Retry sudo apt-get update -qqy
-
-    AptGetInstall git facter
-
-    InstallAWSCLI
-    InstallLeiningen
-
-    # Process options
-    #BootstrapLinuxOptions
-}
-
-InstallAWSCLI() {
-  if [[ ! -f /usr/local/bin/aws ]]; then
-    echo "Installing AWS CLI tools..."
-    curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
-    unzip -o awscli-bundle.zip
-    sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
-    rm -rf awscli-bundle awscli-bundle.zip
-  fi
-}
-
-InstallLeiningen() {
-  if [[ ! -f /usr/local/bin/lein ]]; then
-    echo "Installing Leiningen..."
-    sudo wget -O /usr/local/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
-    sudo chmod a+x /usr/local/bin/lein
-  fi
-}
-
-BootstrapLinuxOptions() {
-    ## Insert Linux installation options if necessary
-    echo "Configuring additional Linux Options"
-}
-
-BootstrapMac() {
-    ## Insert Mac dependencies if necessary
-    
-    BootstrapMacOptions
-}
-
-BootstrapMacOptions() {
-    ## Insert Mac installation options if necessary
-    echo "Configuring additional Mac Options"
-}
-
 AptGetInstall() {
     if [[ "Linux" != "${OS}" ]]; then
         echo "Wrong OS: ${OS}"
@@ -102,6 +44,66 @@ DpkgCurlInstall() {
     done
 }
 
+Bootstrap() {
+    if [[ "Darwin" == "${OS}" ]]; then
+        BootstrapMac
+    elif [[ "Linux" == "${OS}" ]]; then
+        BootstrapLinux
+    else
+        echo "Unknown OS: ${OS}"
+        exit 1
+    fi
+}
+
+BootstrapLinux() {
+    ## Insert Linux dependencies if necessary
+    Retry sudo apt-get update -qqy
+
+    AptGetInstall git facter
+
+    # Process options
+    #BootstrapLinuxOptions
+}
+
+InstallAWSCLI() {
+  if [[ ! -f /usr/local/bin/aws ]]; then
+    echo "Installing AWS CLI tools..."
+    curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+    unzip -o awscli-bundle.zip
+    sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+    rm -rf awscli-bundle awscli-bundle.zip
+  fi
+}
+
+InstallLeiningen() {
+  if [[ ! -f /usr/local/bin/lein ]]; then
+    echo "Installing Leiningen..."
+    sudo curl "https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein" -o "/usr/local/bin/lein"
+    sudo chmod a+x /usr/local/bin/lein
+  fi
+}
+
+BootstrapLinuxOptions() {
+    ## Insert Linux installation options if necessary
+    echo "Configuring additional Linux Options"
+}
+
+InstallDeps() {
+    InstallAWSCLI
+    InstallLeiningen
+}
+
+BootstrapMac() {
+    ## Insert Mac dependencies if necessary
+    
+    BootstrapMacOptions
+}
+
+BootstrapMacOptions() {
+    ## Insert Mac installation options if necessary
+    echo "Configuring additional Mac Options"
+}
+
 DumpSysinfo() {
     echo "Dumping system information."
     mkdir -p logs
@@ -128,11 +130,12 @@ DumpLogsByExtension() {
 
 Exists() {
     echo "Testing install of ${1}..."
-    command -v $1 >/dev/null 2>&1 || echo "$1 doesn't exist" && exit 1
+    command -v $1 >/dev/null 2>&1 && echo "$1 installed correctly!"
 }
 
 DumpLogs() {
     echo "Dumping test execution logs."
+    DumpSysinfo
     DumpLogsByExtension "out"
     DumpLogsByExtension "log"
     DumpLogsByExtension "fail"
@@ -168,6 +171,11 @@ case $COMMAND in
     "bootstrap")
         Bootstrap
         ;;
+    ##
+    ## Install dependencies
+    "install_deps")
+        InstallDeps
+        ;;    
     ##
     ## Install a binary deb package via apt-get
     "install_aptget"|"aptget_install")
