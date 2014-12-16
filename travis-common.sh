@@ -22,9 +22,9 @@ Bootstrap() {
 
 BootstrapLinux() {
     ## Insert Linux dependencies if necessary
-    Retry sudo apt-get update -qq
+    Retry sudo apt-get update -qqy
 
-    Retry sudo apt-get install --no-install-recommends git facter
+    AptGetInstall git facter
 
     InstallAWSCLI
     InstallLeiningen
@@ -79,7 +79,7 @@ AptGetInstall() {
     fi
 
     echo "Installing apt package(s) $@"
-    Retry sudo apt-get install "$@"
+    Retry sudo apt-get install -y "$@"
 }
 
 DpkgCurlInstall() {
