@@ -7,8 +7,7 @@ set -e
 set -x
 
 OS=$(uname -s)
-
-PATH="${PATH}:/usr/texbin"
+PATH="${PATH}"
 
 Bootstrap() {
     if [[ "Darwin" == "${OS}" ]]; then
@@ -27,8 +26,29 @@ BootstrapLinux() {
 
     Retry sudo apt-get install --no-install-recommends git facter
 
+    InstallAWSCLI
+    InstallLeiningen
+
     # Process options
     BootstrapLinuxOptions
+}
+
+InstallAWSCLI() {
+  if [[ ! -f /usr/local/bin/aws ]]; then
+    echo "Installing AWS CLI tools..."
+    curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+    unzip -o awscli-bundle.zip
+    sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+    rm -rf awscli-bundle awscli-bundle.zip
+  fi
+}
+
+InstallLeiningen() {
+  if [[ ! -f /usr/local/bin/lein ]]; then
+  echo "Installing Leiningen..."
+  sudo wget -O /usr/local/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+  sudo chmod a+x /usr/local/bin/lein
+  fi
 }
 
 BootstrapLinuxOptions() {
