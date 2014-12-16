@@ -30,7 +30,7 @@ BootstrapLinux() {
     InstallLeiningen
 
     # Process options
-    BootstrapLinuxOptions
+    #BootstrapLinuxOptions
 }
 
 InstallAWSCLI() {
@@ -172,7 +172,7 @@ case $COMMAND in
         DpkgCurlInstall "$@"
         ;;
     ##
-    ## Run the actual tests, ie R CMD check
+    ## Run the actual tests
     "run_tests")
         RunTests
         ;;
