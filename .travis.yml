@@ -5,7 +5,8 @@ before_install:
   - ./travis-common.sh bootstrap
 install:
   - ./travis-common.sh install_deps
-script: ./travis-common.sh run_tests
+script: 
+  - ./travis-common.sh run_tests
 
 after_failure:
   - ./travis-common.sh dump_logs
