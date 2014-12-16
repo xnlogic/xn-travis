@@ -1,7 +1,4 @@
-env:
-  - global:
-    - WARNINGS_ARE_ERRORS=1
-
+language: bash
 before_install:
   - curl -OL http://raw.github.com/xnlogic/xn-travis/master/travis-common.sh
   - chmod 755 ./travis-common.sh

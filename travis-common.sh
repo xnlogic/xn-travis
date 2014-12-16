@@ -1,6 +1,6 @@
 #!/bin/bash
 # -*- sh-basic-offset: 4; sh-indentation: 4 -*-
-# Bootstrap an Travis environment.
+# Bootstrap Travis environment.
 
 set -e
 # Comment out this line for quieter output:
