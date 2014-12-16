@@ -126,6 +126,11 @@ DumpLogsByExtension() {
     done
 }
 
+Exists() {
+    echo "Testing install of ${1}..."
+    command -v $1 >/dev/null 2>&1 || echo "$1 doesn't exist" && exit 1
+}
+
 DumpLogs() {
     echo "Dumping test execution logs."
     DumpLogsByExtension "out"
@@ -135,6 +140,8 @@ DumpLogs() {
 
 RunTests() {
     echo "Running tests"
+    Exists aws
+    Exists lein
 }
 
 Retry() {
