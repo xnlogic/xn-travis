@@ -1,6 +1,7 @@
 language: bash
+cache: apt
 before_install:
-  - curl -OL http://raw.github.com/xnlogic/xn-travis/master/travis-common.sh
+  - curl -OL "http://raw.github.com/xnlogic/xn-travis/${TRAVIS_BRANCH}/travis-common.sh"
   - chmod 755 ./travis-common.sh
   - ./travis-common.sh bootstrap
 install:
