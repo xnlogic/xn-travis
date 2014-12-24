@@ -6,3 +6,4 @@ Contains:
 
  * AWSCLI
  * Leiningen
+ * Debug logging
