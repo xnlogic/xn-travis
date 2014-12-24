@@ -106,6 +106,9 @@ BootstrapMacOptions() {
 
 DumpSysinfo() {
     echo "Dumping system information."
+    echo "Path is: $PATH"
+    echo "User is: $USER"
+    echo "PWD is: `pwd`"
     mkdir -p logs
     facter > logs/facter.out
 }
