@@ -16,3 +16,6 @@ notifications:
   email:
     on_success: change
     on_failure: change
+env:
+  global:
+    - PATH=$PATH:/home/travis/bin
