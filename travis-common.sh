@@ -70,16 +70,18 @@ InstallAWSCLI() {
     echo "Installing AWS CLI tools..."
     curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
     unzip -o awscli-bundle.zip
-    sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+    ./awscli-bundle/install -i $HOME/bin/aws
     rm -rf awscli-bundle awscli-bundle.zip
+    aws
   fi
 }
 
 InstallLeiningen() {
   if [[ ! -f /usr/local/bin/lein ]]; then
     echo "Installing Leiningen..."
-    sudo curl "https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein" -o "/usr/local/bin/lein"
-    sudo chmod a+x /usr/local/bin/lein
+    curl "https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein" -o "$HOME/bin/lein"
+    chmod a+x $HOME/bin/lein
+    lein
   fi
 }
 
